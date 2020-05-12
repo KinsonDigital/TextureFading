@@ -1,8 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="KinsonDigital.FileIO" Version="1.4.1" />
+    <PackageReference Include="KinsonDigital.SDLCore.Windows" Version="0.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Content\Dungeon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Link.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+
+  <!--COPY NATIVE SDL LIBRARIES FROM BUILD OUTPUT OF SDLCORE NUGET PACKAGE INTO THE MAIN BUILD OUTPUT TARGET DIRECTORY-->
+  <Target Name="Copy-Nuget-Package-Native-Libs-To-Output" Condition="'$(ConfigurationName)|AnyCPU' == 'Debug|AnyCPU' Or '$(ConfigurationName)|AnyCPU' == 'Release|AnyCPU'" AfterTargets="Build">
+    <Exec Command="xcopy &quot;$(TargetDir)runtimes\win-x64\native\*.dll&quot; &quot;$(TargetDir)&quot; /Y /E" />
+  </Target>
 </Project>
